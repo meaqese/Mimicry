@@ -14,25 +14,26 @@ struct ContentView: View {
         VStack {
             Spacer()
             HStack {
-                if !isOpened {
-                    Spacer()
-                }
+                Spacer()
                 RoundedRectangle(cornerRadius: 20)
                     .fill(.blue)
-                    .frame(width: isOpened ? .infinity : 130, height: isOpened ? 400 : 100)
-                    .opacity(isOpened ? 1 : 0)
+                    .frame(width: isOpened ? .infinity : 80, height: isOpened ? 400 : 60)
+                    .padding(.bottom, isOpened ? 100 : 0)
                     .overlay {
                         VStack {
                             HStack {
                                 Image(systemName: "arrowshape.backward.fill")
+                                    .resizable()
                                     .foregroundStyle(.white)
+                                    .frame(width: isOpened ? 15 : 0, height: 15)
                                     .opacity(isOpened ? 1 : 0)
-                                    .padding(.leading, 10)
+                                    .padding(0)
+                                    .padding(.leading, isOpened ? 20 : 0)
+                                    .padding(.top, isOpened ? 20 : 0)
                                 Text(isOpened ? "Back" : "Open")
+                                    .padding(.top, isOpened ? 20: 0)
+                                    .contentTransition(.identity)
                                     .bold()
-                                    .padding(isOpened ? .vertical : .all, 20)
-                                    .background(isOpened ? .clear : .blue)
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
                                     .foregroundStyle(.white)
                                     .onTapGesture {
                                         withAnimation(.linear) {
@@ -48,12 +49,13 @@ struct ContentView: View {
                             }
                         }
                     }
-                if isOpened {
-                    Spacer()
-                }
-            }
-            if isOpened {
-                Spacer()
+                    .onTapGesture {
+                        if !isOpened {
+                            withAnimation(.linear) {
+                                isOpened.toggle()
+                            }
+                        }
+                    }
             }
         }
         .padding()
