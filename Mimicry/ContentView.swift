@@ -21,7 +21,7 @@ struct ContentView: View {
                     .padding(.bottom, isOpened ? 100 : 0)
                     .overlay {
                         VStack {
-                            HStack {
+                            HStack(spacing: isOpened ? 5 : 0) {
                                 Image(systemName: "arrowshape.backward.fill")
                                     .resizable()
                                     .foregroundStyle(.white)
@@ -30,6 +30,7 @@ struct ContentView: View {
                                     .padding(0)
                                     .padding(.leading, isOpened ? 20 : 0)
                                     .padding(.top, isOpened ? 20 : 0)
+                                
                                 Text(isOpened ? "Back" : "Open")
                                     .padding(.top, isOpened ? 20: 0)
                                     .contentTransition(.identity)
