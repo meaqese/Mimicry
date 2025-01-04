@@ -9,57 +9,65 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var isOpened = false
+    @Namespace private var transition: Namespace.ID
     
     var body: some View {
-        VStack {
-            Spacer()
-            HStack {
-                Spacer()
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(.blue)
-                    .frame(width: isOpened ? .infinity : 80, height: isOpened ? 400 : 60)
-                    .padding(.bottom, isOpened ? 100 : 0)
+        ZStack {
+            if isOpened {
+                RoundedRectangle(cornerRadius: 25.0)
+                    .fill(.tint)
+                    .matchedGeometryEffect(id: "bg", in: transition)
+                    .aspectRatio(0.77, contentMode: .fit)
+                    .frame(width: 320)
                     .overlay {
                         VStack {
-                            HStack(spacing: isOpened ? 5 : 0) {
-                                Image(systemName: "arrowshape.backward.fill")
-                                    .resizable()
-                                    .foregroundStyle(.white)
-                                    .frame(width: isOpened ? 15 : 0, height: 15)
-                                    .opacity(isOpened ? 1 : 0)
-                                    .padding(0)
-                                    .padding(.leading, isOpened ? 20 : 0)
-                                    .padding(.top, isOpened ? 20 : 0)
-                                
-                                Text(isOpened ? "Back" : "Open")
-                                    .padding(.top, isOpened ? 20: 0)
-                                    .contentTransition(.identity)
-                                    .bold()
-                                    .foregroundStyle(.white)
-                                    .onTapGesture {
-                                        withAnimation(.linear) {
-                                            isOpened.toggle()
-                                        }
+                            HStack {
+                                Button {
+                                    withAnimation {
+                                        isOpened.toggle()
                                     }
-                                if isOpened {
-                                    Spacer()
+                                } label: {
+                                    Label("Back", systemImage:  "arrowshape.backward.fill")
+                                        .foregroundStyle(.white)
+                                        .font(.title2)
+                                        .fontWeight(.semibold)
+                                        .fixedSize()
+                                        .matchedGeometryEffect(id: "text", in: transition)
                                 }
-                            }
-                            if isOpened {
+                                .padding()
+                                
                                 Spacer()
                             }
+                            Spacer()
                         }
                     }
-                    .onTapGesture {
-                        if !isOpened {
-                            withAnimation(.linear) {
+            } else {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button {
+                            withAnimation {
                                 isOpened.toggle()
                             }
+                        } label: {
+                            RoundedRectangle(cornerRadius: 20)
+                                .matchedGeometryEffect(id: "bg", in: transition)
+                                .frame(width: 100 , height: 60)
+                                .foregroundStyle(.tint)
+                                .overlay {
+                                    Text("Open")
+                                        .foregroundStyle(.white)
+                                        .fontWeight(.semibold)
+                                        .font(.title2)
+                                        .matchedGeometryEffect(id: "text", in: transition)
+                                }
                         }
                     }
+                }
+                .padding()
             }
         }
-        .padding()
     }
 }
 
